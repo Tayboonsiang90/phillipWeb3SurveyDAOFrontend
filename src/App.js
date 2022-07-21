@@ -1,27 +1,29 @@
 /* IMPORTING DEPENDENCIES
-*/
+ */
 // React Imports
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom"; 
-import React, { useEffect } from "react"; 
-// Styling 
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import React, { useEffect } from "react";
+// Styling
 import "./App.css"; // Global Styling
 import logo from "./media/logo.jpg"; // Innovation Team Logo
 // Pages import for <Link></Link> to work
+import Home from "./pages/Home";
 import EthFaucet from "./pages/EthFaucet";
 import VoteFaucet from "./pages/VoteFaucet";
-import Home from "./pages/Home";
+import Vote from "./pages/Vote";
 // Contexts Import
 import { useGlobalContext } from "./contexts/globalProvider";
 // Web3 Import
 import { createAlchemyWeb3 } from "@alch/alchemy-web3";
 
 /* ENVIRONMENT VARIABLES (EXPOSED)
-*/
+ */
 const apiKey = "O2R9-YptcrXeygM_lYXcmBcnQvlxnUtB"; // Alchemy API Key
 const voteTokenERC20Address = "0x257D9Cf29c6f26806c94794a7F39Ee3c28cD28e7"; // ERC20 Vote Token Address
+const MINUTE_MS = 5000; // Pull new data Timing (ms)
 
 /* STANDARD FUNCTIONS
-*/
+ */
 function sleep(ms) {
     return new Promise((resolve) => {
         setTimeout(resolve, ms);
@@ -29,7 +31,7 @@ function sleep(ms) {
 }
 
 /* REACT APP
-*/
+ */
 function App() {
     // Initialize an alchemy-web3 instance:
     const web3 = createAlchemyWeb3(`https://eth-rinkeby.alchemyapi.io/v2/${apiKey}`);
@@ -40,6 +42,13 @@ function App() {
     // Component Did Mount (Runs once on mounting)
     useEffect(() => {
         metamaskSetupOperations();
+
+        // A (MINUTE_MS) timed function to retrieve new data from the contract
+        const interval = setInterval(() => {
+            console.log("Refreshing data...");
+            metamaskSetupOperations();
+        }, MINUTE_MS);
+        return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
     }, []);
 
     // Checks if metamask is installed and checks if wallet is connected
@@ -166,33 +175,37 @@ function App() {
             <nav className="navbar navbar-expand-lg bg-dark mb-3">
                 <div className="container-fluid">
                     {/* Logo  */}
-                    <img className="me-3" src={logo} alt="Logo" style={{ width: "25vh" }} />
+                    <Link to="/">
+                        <img className="me-3" src={logo} alt="Logo" style={{ width: "25vh" }} />
+                    </Link>
+                    {/* Dropdown Button  */}
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                         <span className="navbar-toggler-icon"></span>
                     </button>
-                    <div className="collapse navbar-collapse d-flex justify-content-between align-items-center" id="navbarNav">
-                        <ul className="navbar-nav d-flex align-items-center">
-                            <li className="nav-item pe-4 text-center h3">
-                                <Link className="nav-link font-gold font-small" to="/">
+                    {/* Expandable NavLinks  */}
+                    <div className="collapse navbar-collapse" id="navbarNav">
+                        <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li className="nav-item text-center me-2">
+                                <Link className="nav-link font-gold-big text-nowrap" to="/Vote">
                                     Vote
                                 </Link>
                             </li>
-                            <li className="nav-item pe-4 text-center h3">
-                                <Link className="nav-link font-gold font-small" to="/EthFaucet">
+                            <li className="nav-item text-center me-2">
+                                <Link className="nav-link font-gold-big text-nowrap" to="/EthFaucet">
                                     Claim ETH
                                 </Link>
                             </li>
-                            <li className="nav-item pe-4 text-center h3">
-                                <Link className="nav-link font-gold font-small" to="/VoteFaucet">
+                            <li className="nav-item text-center me-2">
+                                <Link className="nav-link font-gold-big text-nowrap" to="/VoteFaucet">
                                     Claim VOTE
                                 </Link>
                             </li>
-                            <li className="nav-item pe-4 text-center h3">
+                            <li className="nav-link font-gold-big text-nowrap me-2">
                                 <a href="https://app.uniswap.org/#/swap?chain=rinkeby&inputCurrency=ETH&outputCurrency=0x257D9Cf29c6f26806c94794a7F39Ee3c28cD28e7" className="font-gold font-small" target="_blank" rel="noreferrer">
                                     Trade VOTE
                                 </a>
                             </li>
-                            <li className="nav-item pe-4 text-center h3">
+                            <li className="nav-link font-gold-big text-nowrap me-2">
                                 <a href="https://rinkeby.etherscan.io/token/0x257D9Cf29c6f26806c94794a7F39Ee3c28cD28e7#balances" className="font-gold font-small" target="_blank" rel="noreferrer">
                                     Tokenomics
                                 </a>
@@ -200,7 +213,7 @@ function App() {
                         </ul>
                         {currentAccountAddress && (
                             <>
-                                <li className="nav-item">
+                                <div className="nav-item pe-3 d-flex justify-content-center">
                                     <div className="font-white text-end font-medium">
                                         <div>
                                             Connected to{" "}
@@ -215,8 +228,8 @@ function App() {
                                             <i className="fa-solid fa-coins"></i> Vote Token Balance: {currentAccountVoteBal}
                                         </div>
                                     </div>
-                                </li>
-                                <li className="nav-item">
+                                </div>
+                                <div className="nav-item d-flex justify-content-center">
                                     <button
                                         type="button"
                                         className="btn btn-primary btn-lg font-medium"
@@ -226,15 +239,15 @@ function App() {
                                     >
                                         Disconnect
                                     </button>
-                                </li>
+                                </div>
                             </>
                         )}
                         {!currentAccountAddress && (
-                            <li className="nav-item">
+                            <div className="nav-item d-flex justify-content-center">
                                 <button type="button" className="btn btn-primary btn-lg font-medium" onClick={connectWallet}>
                                     Connect Wallet
                                 </button>
-                            </li>
+                            </div>
                         )}
                     </div>
                 </div>
@@ -322,8 +335,11 @@ function App() {
                 </div>
             </div>
             <Routes>
-                {/* Home route */}
+                {/* Lending Page route */}
                 <Route path="/" element={<Home />} />
+
+                {/* Vote route */}
+                <Route path="/Vote" element={<Vote />} />
 
                 {/* EthFaucet route */}
                 <Route path="/EthFaucet" element={<EthFaucet />} />
