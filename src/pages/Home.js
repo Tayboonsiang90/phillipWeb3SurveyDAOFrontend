@@ -17,11 +17,13 @@ export default function Home() {
     return (
         <React.Fragment>
             <div className="container d-flex flex-column justify-content-center align-items-center">
-                <h1 className="border border-5" style={{ fontSize: "5em" }}>
+                <h1 className="border border-5" style={{ fontSize: "3em" }}>
                     {" "}
                     www.tinyurl.com/phillipdemo
                 </h1>
-                <h1 className="mt-5">Instructions: </h1>
+                <h1 className="mt-5" style={{ fontSize: "3em" }}>
+                    Instructions:{" "}
+                </h1>
                 <ol className="list-group list-group-numbered w-75 border border-5">
                     <li className="list-group-item d-flex justify-content-between align-items-start">
                         <div className="ms-2 me-auto">
@@ -110,7 +112,9 @@ export default function Home() {
                         </div>
                     </li>
                 </ol>
-                <h1 className="mt-5">Frequently Asked Questions (FAQ) </h1>
+                <h1 className="mt-5" style={{ fontSize: "3em" }}>
+                    Frequently Asked Questions (FAQ){" "}
+                </h1>
                 <div className="accordion accordion-flush border w-75 border border-5" id="accordionFlushExample">
                     <div className="accordion-item">
                         <h2 className="accordion-header" id="flush-headingOne">
