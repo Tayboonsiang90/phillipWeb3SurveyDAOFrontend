@@ -45,27 +45,22 @@ export default function EthFaucet() {
             <div className="container mt-5">
                 <h1 className="font-gold font-big">This is a Rinkeby ETH faucet. Get your free ETH here!</h1>
                 <h3>ETH is used to pay for transactions (gas fees).</h3>
-                <h4>Current Faucet ETH Level: {faucetEthLevel} ETH</h4>
-
-                <div className="row">
-                    <div className="col borderDark">
-                        <h1></h1>
-                    </div>
-                    <div className="col borderDark">
-                        <h1></h1>
-                    </div>
-                </div>
+                <h4>Current Faucet ETH amount: {faucetEthLevel} ETH</h4>
+                <p>Please only claim once! If you want more ETH, go to https://faucet.rinkeby.io/ .</p>
                 <button type="button" className="btn btn-primary btn-lg" onClick={claimFaucet}>
                     {faucetFlag ? "Please Wait..." : "Get 0.1 Rinkeby ETH"}
                 </button>
-                <p>If the page is stuck, try reloading and claim again. Thank you!</p>
-                <p>Only take what you need from this faucet!</p>
+
                 {txId && (
-                    <div>
-                        0.1 ETH has been sent to your connected wallet.{" "}
-                        <a href={"https://rinkeby.etherscan.io/tx/" + txId} target="_blank" rel="noreferrer">
-                            {txId}
-                        </a>
+                    <div className="border border-5 border-danger mt-3">
+                        0.1 ETH is being sent to your wallet. Please wait 2-15 seconds for it to show up.{" "}
+                        <div>
+                            Transaction Id:{" "}
+                            <a href={"https://rinkeby.etherscan.io/tx/" + txId} target="_blank" rel="noreferrer">
+                                {txId}
+                            </a>{" "}
+                            (Click to see your transaction on the Blockchain)
+                        </div>
                     </div>
                 )}
             </div>

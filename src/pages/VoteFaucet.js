@@ -90,11 +90,15 @@ export default function VoteFaucet() {
                     </button>
                 )}
                 {txId && (
-                    <div>
-                        100 VOTE has been sent to your connected wallet.{" "}
-                        <a href={"https://rinkeby.etherscan.io/tx/" + txId} target="_blank" rel="noreferrer">
-                            {txId}
-                        </a>
+                    <div className="border border-5 border-danger mt-3">
+                        100 VOTE is being sent to your connected wallet. Please wait 2-15 seconds for it to show up.
+                        <div>
+                            Transaction Id:{"    "}
+                            <a href={"https://rinkeby.etherscan.io/tx/" + txId} target="_blank" rel="noreferrer">
+                                {txId}
+                            </a>{"    "}
+                            (Click to see your transaction on the Blockchain)
+                        </div>
                     </div>
                 )}
                 <div className="mt-5">

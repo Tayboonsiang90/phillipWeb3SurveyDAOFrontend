@@ -288,32 +288,34 @@ export default function Vote() {
         for (let i = count; i > expiredProposalList.length; i--) {
             let proposal = activeProposalList[i - 1 - expiredProposalList.length];
             let accordionItem = (
-                <div className="accordion-item mb-2" key={count}>
-                    <h2 className="accordion-header" id={"headingOne" + count}>
-                        <button className="accordion-button fw-bold" type="button" data-bs-toggle="collapse" data-bs-target={"#collapseOneActive" + count}>
-                            Proposal #{count}: {proposal.title}
+                <div className="accordion-item mb-1" key={count}>
+                    <div className="accordion-header" id={"headingOne" + count}>
+                        <button className="accordion-button fw-bold bg-success" type="button" data-bs-toggle="collapse" data-bs-target={"#collapseOneActive" + count}>
+                            <div className="h4">
+                                Proposal #{count}: {proposal.title}
+                            </div>
                         </button>
-                    </h2>
+                    </div>
                     <div id={"collapseOneActive" + count} className={"accordion-collapse collapse "} data-bs-parent="#accordionActive">
                         <div className="accordion-body bg-light">
                             <div className="row">
                                 <div className="col-12 h1 text-center mb-4 font-big">{proposal.title}</div>
                             </div>
-                            <div className="row">
+                            <div className="row mt-3">
                                 <div className="col-9">
                                     <div>
                                         <span className="fw-bold font-medium">Description:</span> {proposal.description}
                                     </div>
-                                    <div>
+                                    <div className="mt-1">
                                         <span className="fw-bold font-medium">Proposer:</span>{" "}
                                         <a href={"https://rinkeby.etherscan.io/address/" + proposal.author} target="_blank" rel="noreferrer">
                                             {proposal.author}
                                         </a>
                                     </div>
-                                    <div>
+                                    <div className="mt-1">
                                         <span className="fw-bold font-medium">Date/Time Submitted:</span> {proposal.datetimeCreated.toString()}
                                     </div>
-                                    <div>
+                                    <div className="mt-1">
                                         <span className="fw-bold font-medium">Date/Time Expiring:</span> {proposal.datetimeExpire.toString()}
                                     </div>
                                     {/* <div>
@@ -373,7 +375,8 @@ export default function Vote() {
                                         </tbody>
                                     </table>
                                     {/* <img src="https://lh3.googleusercontent.com/g0Jw-I6-gH2DVCpnl3u8QKZVT_meR9lcJlpyeSZ-MyvwLnyEZvgyrY5frldA8HCv55s=w280" alt="new" /> */}
-                                    <select className="form-select border border-danger mt-4" onChange={updateStateSelectBox} value={proposalOptionSelect[count - 1]} data-tag={count - 1}>
+                                    <div className="mt-4">Choose your vote here</div>
+                                    <select className="form-select border border-success" onChange={updateStateSelectBox} value={proposalOptionSelect[count - 1]} data-tag={count - 1}>
                                         <option>Please select an option</option>
                                         {proposal.optionStringArray.map((item, i) => {
                                             return (
@@ -395,22 +398,26 @@ export default function Vote() {
                             </div>
                             <div className="row">
                                 {voteTxId && (
-                                    <div className="col-12">
-                                        Your vote is successful.
-                                        <a href={"https://rinkeby.etherscan.io/tx/" + voteTxId} target="_blank" rel="noreferrer">
-                                            {voteTxId}
-                                        </a>
+                                    <div className="col-12 border border-5 border-danger mt-3">
+                                        Your vote is submitted! Please wait 2-15 seconds for your transaction to confirm.
+                                        <div>
+                                            Transaction Id:{" "}
+                                            <a href={"https://rinkeby.etherscan.io/tx/" + voteTxId} target="_blank" rel="noreferrer">
+                                                {voteTxId}
+                                            </a>
+                                        </div>
                                     </div>
                                 )}
                                 {claimTxId && (
-                                    <div className="col-12">
-                                        Your NFT claim is successful! Congratz!
+                                    <div className="col-12 border border-5 border-danger mt-3">
+                                        Your NFT claim is submitted! Please wait 2-15 seconds for your transaction to confirm.
                                         <div>
+                                            Transaction Id:{" "}
                                             <a href={"https://rinkeby.etherscan.io/tx/" + claimTxId} target="_blank" rel="noreferrer">
                                                 {claimTxId}
                                             </a>
                                         </div>
-                                        <div>
+                                        <div className="fw-bold h3">
                                             <a href={"https://testnets.opensea.io/" + currentAccountAddress} target="_blank" rel="noreferrer">
                                                 View your NFT here!
                                             </a>
@@ -435,9 +442,9 @@ export default function Vote() {
         for (let i = count; i > 0; i--) {
             let proposal = expiredProposalList[i - 1];
             let accordionItem = (
-                <div className="accordion-item mb-2" key={count}>
+                <div className="accordion-item mb-1" key={count}>
                     <h2 className="accordion-header" id={"headingOne" + count}>
-                        <button className="accordion-button fw-bold" type="button" data-bs-toggle="collapse" data-bs-target={"#collapseOne" + count}>
+                        <button className="accordion-button fw-bold bg-danger" type="button" data-bs-toggle="collapse" data-bs-target={"#collapseOne" + count}>
                             Proposal #{count}: {proposal.title}
                         </button>
                     </h2>
@@ -585,21 +592,21 @@ export default function Vote() {
                     <button type="button" className="btn-close" data-bs-dismiss="alert"></button>
                 </div>
 
-                <h1 className="mt-5">
+                <h1 className="mt-2">
                     Active Proposal List
-                    <button type="button" className="ms-5 btn btn-success btn-lg font-medium" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <button type="button" className="ms-5 btn btn-warning btn-lg font-medium" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         Create a new Proposal
                     </button>
                 </h1>
                 {/* Accordion containing a list of proposals */}
                 <div className={expiredProposalList.length ? "d-none" : "h1 font-gold font-small"}>Loading...</div>
-                <div className="accordion mt-5 w-100" id="accordionActive">
+                <div className="accordion mt-1 w-100 border border-5" id="accordionActive">
                     {displayActiveProposal()}
                 </div>
                 <h1 className="mt-5">Expired Proposal List</h1>
                 {/* Accordion containing a list of proposals */}
                 <div className={expiredProposalList.length ? "d-none" : "h1 font-gold font-small"}>Loading...</div>
-                <div className="accordion mt-5 w-100" id="accordionExample">
+                <div className="accordion mt-1 w-100 border border-5" id="accordionExample">
                     {displayExpiredProposal()}
                 </div>
             </div>
@@ -649,7 +656,7 @@ export default function Vote() {
                         </div>
                         {createTxId && (
                             <div className="col-12">
-                                Your proposal has been successfully submitted.
+                                Your proposal has been successfully submitted. Please wait 2-15 seconds for it to confirm.
                                 <a href={"https://rinkeby.etherscan.io/tx/" + createTxId} target="_blank" rel="noreferrer">
                                     {createTxId}
                                 </a>

@@ -42,3 +42,11 @@
     font-weight: 700;
     font-size: 1.8em;
 }
+
+.bg-success{
+    background-color: #d1e7dd !important;
+}
+
+.bg-danger{
+    background-color: #f8d7da !important;
+}
